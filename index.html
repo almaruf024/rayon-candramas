@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayon Candramas</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --warna-utama: #E8751A;
+            --warna-aksen: #F4A261;
+            --warna-teks: #333333;
+            --warna-putih: #ffffff;
+            --warna-latar: #f9f9f9;
+            --gradient-primary: linear-gradient(135deg, #E8751A 0%, #F4A261 100%);
+            --gradient-dark: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            --shadow-card: 0 10px 30px rgba(232, 117, 26, 0.15);
+            --shadow-hover: 0 20px 40px rgba(232, 117, 26, 0.25);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        html { 
+            scroll-behavior: smooth; 
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            line-height: 1.6; 
+            background-color: var(--warna-latar); 
+            color: var(--warna-teks);
+            overflow-x: hidden;
+        }
+
+        .container { 
+            max-width: 1200px; 
+            margin: auto; 
+            overflow: hidden; 
+            padding: 0 20px; 
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 20px rgba(232, 117, 26, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(232, 117, 26, 0.6);
+            }
+            100% {
+                box-shadow: 0 0 20px rgba(232, 117, 26, 0.3);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* NAVBAR ENHANCED */
+        .navbar {
+            background: rgba(232, 117, 26, 0.95);
+            backdrop-filter: blur(10px);
+            color: var(--warna-putih);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(232, 117, 26, 0.98);
+            padding: 0.5rem 0;
+        }
+
+        .navbar .container { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        .navbar .logo { 
+            font-size: 1.5rem; 
+            font-weight: 800; 
+            color: var(--warna-putih); 
+            text-decoration: none; 
+            text-transform: uppercase; 
+            display: flex; 
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+        }
+
+        .navbar .logo-img { 
+            height: 60px; 
+            width: auto; 
+            margin-right: 15px; 
+            border-radius: 0%;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .logo:hover .logo-img {
+            transform: rotate(360deg);
+        }
+
+        .navbar ul { 
+            display: flex; 
+            list-style: none; 
+        }
+
+        .navbar ul li a { 
+            color: var(--warna-putih); 
+            padding: 0.75rem 1.5rem; 
+            margin: 0 0.25rem; 
+            text-decoration: none; 
+            transition: all 0.3s ease; 
+            font-weight: 500;
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar ul li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .navbar ul li a:hover::before {
+            left: 100%;
+        }
+
+        .navbar ul li a:hover { 
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* HERO SECTION ENHANCED */
+        #beranda { 
+            background: linear-gradient(45deg, rgba(232, 117, 26, 0.8), rgba(244, 162, 97, 0.6)), 
+                        url('https://images.pexels.com/photos/8612140/pexels-photo-8612140.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center/cover; 
+            height: 100vh; 
+            color: var(--warna-putih); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #beranda::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(232, 117, 26, 0.1), transparent);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        #beranda h1 { 
+            font-size: 4rem; 
+            color: var(--warna-putih); 
+            margin-bottom: 1rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        #beranda p { 
+            font-size: 1.5rem; 
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.3s both;
+            position: relative;
+            z-index: 2;
+            font-weight: 300;
+        }
+
+        .btn { 
+            display: inline-block; 
+            background: var(--gradient-primary);
+            color: var(--warna-putih); 
+            padding: 1rem 3rem; 
+            border: none;
+            cursor: pointer; 
+            font-size: 1.1rem; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            transition: all 0.4s ease; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.6s both;
+            z-index: 2;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover { 
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: var(--shadow-hover);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        /* FLOATING ELEMENTS */
+        .floating-element {
+            position: absolute;
+            animation: bounce 3s ease-in-out infinite;
+        }
+
+        .floating-1 {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-2 {
+            top: 60%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        .floating-3 {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+
+        /* SECTIONS */
+        section { 
+            padding: 6rem 0; 
+            position: relative;
+        }
+
+        h2 { 
+            color: var(--warna-utama); 
+            text-align: center; 
+            padding-bottom: 3rem; 
+            font-size: 3rem; 
+            text-transform: uppercase; 
+            font-weight: 700;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        /* TENTANG KAMI ENHANCED */
+        #tentang-kami {
+            background: var(--warna-putih);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #tentang-kami::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(232, 117, 26, 0.03), transparent);
+            z-index: 1;
+        }
+
+        #tentang-kami .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        #tentang-kami .tentang-content { 
+            display: flex; 
+            gap: 4rem; 
+            align-items: center; 
+        }
+
+        #tentang-kami img { 
+            width: 450px; 
+            height: 450px; 
+            object-fit: cover; 
+            border-radius: 20px; 
+            box-shadow: var(--shadow-card);
+            transition: all 0.4s ease;
+            animation: fadeInLeft 1s ease-out;
+        }
+
+        #tentang-kami img:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: var(--shadow-hover);
+        }
+
+        #tentang-kami .tentang-text {
+            flex: 1;
+            animation: fadeInRight 1s ease-out;
+        }
+
+        #tentang-kami h3 {
+            color: var(--warna-utama);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        #tentang-kami p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+
+        /* PROFIL ENHANCED */
+        #profil { 
+            background: var(--warna-latar);
+            position: relative;
+        }
+
+        .profil-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 2.5rem; 
+            text-align: center; 
+        }
+
+        .profil-card { 
+            background: var(--warna-putih); 
+            padding: 2.5rem; 
+            border-radius: 20px; 
+            box-shadow: var(--shadow-card);
+            transition: all 0.4s ease; 
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profil-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .profil-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .profil-card:hover { 
+            transform: translateY(-15px); 
+            box-shadow: var(--shadow-hover);
+        }
+
+        .profil-card img { 
+            width: 150px; 
+            height: 150px; 
+            border-radius: 50%; 
+            border: 5px solid var(--warna-utama); 
+            margin-bottom: 1.5rem; 
+            object-fit: cover;
+            transition: all 0.3s ease;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .profil-card:hover img {
+            transform: scale(1.1);
+            border-color: var(--warna-aksen);
+        }
+
+        .profil-card h3 { 
+            color: var(--warna-utama); 
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .profil-card h4 { 
+            color: var(--warna-aksen); 
+            font-weight: 500; 
+            font-style: italic;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .profil-card p {
+            line-height: 1.6;
+            color: #666;
+        }
+
+        /* KONTAK ENHANCED */
+        #kontak {
+            background: var(--gradient-dark);
+            color: var(--warna-putih);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #kontak::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(232, 117, 26, 0.1), transparent);
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        #kontak .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        #kontak h2 {
+            color: var(--warna-putih);
+        }
+
+        .kontak-info { 
+            text-align: center; 
+            max-width: 700px; 
+            margin: auto; 
+        }
+
+        .kontak-info p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .kontak-info ul { 
+            list-style: none; 
+            margin-top: 2rem; 
+        }
+
+        .kontak-info ul li { 
+            font-size: 1.2rem; 
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .kontak-info ul li:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(10px);
+        }
+
+        .whatsapp-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #25D366;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-link:hover {
+            color: #20c95a;
+            transform: scale(1.05);
+        }
+
+        .whatsapp-link .fa-whatsapp {
+            font-size: 1.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        /* FOOTER ENHANCED */
+        footer { 
+            background: #1a1a1a; 
+            color: var(--warna-putih); 
+            text-align: center; 
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        /* MOBILE MENU */
+        .menu-toggle { 
+            display: none; 
+            flex-direction: column; 
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .menu-toggle .bar { 
+            height: 3px; 
+            width: 25px; 
+            background: white; 
+            margin: 4px 0; 
+            transition: 0.4s; 
+            border-radius: 2px;
+        }
+
+        .menu-toggle.active .bar:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .menu-toggle.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active .bar:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* SCROLL TO TOP BUTTON */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--gradient-primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: var(--shadow-card);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            animation: glow 1s ease-in-out infinite;
+        }
+
+        /* RESPONSIVE */
+        @media(max-width: 768px) {
+            h2 { font-size: 2.2rem; }
+            #beranda h1 { font-size: 2.5rem; }
+            #beranda p { font-size: 1.2rem; }
+            
+            .menu-toggle { display: flex; }
+            
+            .navbar ul { 
+                display: none; 
+                flex-direction: column; 
+                width: 100%; 
+                position: absolute; 
+                top: 85px; 
+                left: 0; 
+                background: rgba(232, 117, 26, 0.98);
+                backdrop-filter: blur(10px);
+                text-align: center;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            }
+            
+            .navbar ul.active { display: flex; }
+            
+            .navbar ul li { 
+                padding: 1rem 0; 
+                border-top: 1px solid rgba(255,255,255,0.2); 
+            }
+            
+            #tentang-kami .tentang-content { 
+                flex-direction: column; 
+                text-align: center; 
+                gap: 2rem;
+            }
+            
+            #tentang-kami img { 
+                width: 100%; 
+                max-width: 350px; 
+                height: auto; 
+            }
+
+            .profil-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scroll-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="container">
+               <a href="#beranda" class="logo">
+                <img src="img/th.jpg" alt="Logo Rayon Candramas" class="logo-img">
+                <span>RAYON CANDRAMAS</span>
+               </a>
+                <ul class="nav-links">
+                    <li><a href="#beranda">Beranda</a></li>
+                    <li><a href="#tentang-kami">Tentang Kami</a></li>
+                    <li><a href="#profil">Profil</a></li>
+                    <li><a href="#kontak">Kontak</a></li>
+                </ul>
+                <div class="menu-toggle">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="beranda">
+            <div class="floating-element floating-1">
+                <i class="fas fa-star" style="color: rgba(255,255,255,0.3); font-size: 2rem;"></i>
+            </div>
+            <div class="floating-element floating-2">
+                <i class="fas fa-fist-raised" style="color: rgba(255,255,255,0.2); font-size: 2.5rem;"></i>
+            </div>
+            <div class="floating-element floating-3">
+                <i class="fas fa-medal" style="color: rgba(255,255,255,0.25); font-size: 1.8rem;"></i>
+            </div>
+            
+            <h1>Selamat Datang di Rayon Candramas</h1>
+            <p>Membentuk Generasi Tangguh, Berkarakter, dan Berbudaya</p>
+            <a href="#kontak" class="btn">Daftar Sekarang</a>
+        </section>
+
+        <section id="tentang-kami">
+            <div class="container">
+                <h2 class="animate-on-scroll">Tentang Kami</h2>
+                <div class="tentang-content">
+                    <img src="img/th.jpg" alt="Latihan Silat" class="animate-on-scroll">
+                    <div class="tentang-text animate-on-scroll">
+                        <h3>Sejarah dan Filosofi</h3>
+                        <p>Rayon Candramas didirikan dengan visi untuk melestarikan seni bela diri pencak silat sebagai warisan budaya bangsa, sekaligus membentuk karakter para pesilat yang disiplin, rendah hati, dan bertanggung jawab.</p>
+                        <p>Filosofi kami adalah <strong>"Patah Tumbuh Hilang Berganti"</strong>, yang berarti semangat juang tidak akan pernah padam. Kami mengajarkan tidak hanya teknik fisik, tetapi juga kekuatan mental dan spiritual untuk menghadapi tantangan hidup.</p>
+                        <p>Dengan dedikasi tinggi dan metode pelatihan yang terpadu, kami telah melahirkan banyak atlet berprestasi yang mengharumkan nama bangsa di berbagai kompetisi nasional dan internasional.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="profil">
+            <div class="container">
+                <h2 class="animate-on-scroll">Profil Pelatih</h2>
+                <div class="profil-grid">
+                    <div class="profil-card animate-on-scroll">
+                        <img src="img/mas-udin.jpg" alt="Foto Mas Udin">
+                        <h3>Udin</h3>
+                        <h4>Ketua Rayon</h4>
+                        
+                    </div>
+
+                    <div class="profil-card animate-on-scroll">
+                        <img src="img/mas-rizal.jpg" alt="Foto Mas Men">
+                        <h3>Rizal</h3>
+                        <h4>Pelatih Atlit</h4>
+                   
+                    </div>
+
+                    <div class="profil-card animate-on-scroll">
+                        <img src="img/mas-kikik.jpg" alt="Foto Mas Kikik">
+                        <h3>Kikik</h3>
+                        <h4>Pelatih Seni</h4>
+        
+                    </div>
+
+                    <div class="profil-card animate-on-scroll">
+                        <img src="img/mas-stifen.jpg" alt="Foto Mas Stefen">
+                        <h3>Stifen</h3>
+                        <h4>Pelatih Atlit</h4>
+                       
+                    </div>
+
+                    <div class="profil-card animate-on-scroll">
+                        <img src="img/hati.jpg" alt="Foto Mas Bagus">
+                        <h3>Bagus</h3>
+                        <h4>Pelatih Tetap</h4>
+
+                    </div>
+
+                    <div class="profil-card animate-on-scroll">
+                        <img src="img/mas-aryak.jpg" alt="Foto Mas Aryak">
+                        <h3>Aryak</h3>
+                        <h4>Pelatih Tetap</h4>
+                       
+                    </div>
+
+                     <div class="profil-card animate-on-scroll">
+                        <img src="img/mbak-meysa.jpg" alt="Foto Mas Aryak">
+                        <h3>Meysa</h3>
+                        <h4>Pelatih Tetap</h4>
+                    </div>
+
+                    <div class="profil-card animate-on-scroll">
+                        <img src="img/hati.jpg" alt="Foto Mas Bagus">
+                        <h3>Bagas</h3>
+                        <h4>Pelatih Tetap</h4>
+        
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="kontak">
+            <div class="container">
+                <h2 class="animate-on-scroll">Hubungi Kami</h2>
+                <div class="kontak-info animate-on-scroll">
+                    <p>Tertarik untuk bergabung atau ingin bertanya lebih lanjut? Jangan ragu untuk menghubungi kami melalui informasi di bawah ini atau datang langsung ke Rayon kami.</p>
+                    <ul>
+                        <li>
+                            <i class="fas fa-map-marker-alt" style="color: var(--warna-aksen); margin-right: 10px;"></i>
+                            <strong>Alamat:</strong> Sidoarjo, Sedati-Perum Candramas
+                        </li>
+                        <li>
+                            <i class="fas fa-phone" style="color: var(--warna-aksen); margin-right: 10px;"></i>
+                            <strong>Telepon / WhatsApp:</strong>
+                            <a href="https://wa.me/6285792698607" target="_blank" class="whatsapp-link">
+                                <i class="fab fa-whatsapp"></i> 
+                                085792698607
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope" style="color: var(--warna-aksen); margin-right: 10px;"></i>
+                            <strong>Email:</strong> Rayon_Candramas@gmail.com
+                        </li>
+                        <li>
+                            <i class="fas fa-clock" style="color: var(--warna-aksen); margin-right: 10px;"></i>
+                            <strong>Jadwal Latihan:</strong> Setiap Selasa,Kamis  & Sabtu, Pukul 17:00 - 00:00
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Rayon Candramas. Hak Cipta Dilindungi.</p>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with animate-on-scroll class
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Scroll to top functionality
+        const scrollTopBtn = document.querySelector('.scroll-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add loading animation to images
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('load', () => {
+                img.style.opacity = '1';
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('#beranda');
+            const speed = scrolled * 0.5;
+            parallax.style.transform = `translateY(${speed}px)`;
+        });
+
+        // Add hover effect to profile cards
+        document.querySelectorAll('.profil-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-15px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Dynamic background particles (optional enhancement)
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.width = '4px';
+            particle.style.height = '4px';
+            particle.style.background = 'rgba(232, 117, 26, 0.3)';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.animation = 'fadeInUp 3s ease-out forwards';
+            
+            const x = Math.random() * window.innerWidth;
+            const y = window.innerHeight;
+            
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 3000);
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 2000);
+
+        // Add typing effect to hero text (optional)
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            type();
+        }
+
+        // Initialize typing effect on page load
+        window.addEventListener('load', () => {
+            const heroTitle = document.querySelector('#beranda h1');
+            const originalText = heroTitle.textContent;
+            setTimeout(() => {
+                typeWriter(heroTitle, originalText, 80);
+            }, 1000);
+        });
+
+        // Counter animation for stats (if you want to add stats later)
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            function updateCounter() {
+                start += increment;
+                if (start < target) {
+                    element.textContent = Math.floor(start);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target;
+                }
+            }
+            
+            updateCounter();
+        }
+
+        // Add entrance animations with stagger effect
+        window.addEventListener('load', () => {
+            const cards = document.querySelectorAll('.profil-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+                card.classList.add('animate-on-scroll');
+            });
+        });
+
+        // Easter egg: Konami code
+        let konamiCode = [];
+        const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // Up Up Down Down Left Right Left Right B A
+        
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.keyCode);
+            if (konamiCode.length > konamiSequence.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.toString() === konamiSequence.toString()) {
+                // Easter egg activated - add special effect
+                document.body.style.animation = 'pulse 0.5s ease-in-out 3';
+                setTimeout(() => {
+                    alert('🥋 Selamat! Anda telah menemukan kode rahasia Rayon Candramas! 🥋');
+                    document.body.style.animation = '';
+                }, 1500);
+                konamiCode = [];
+            }
+        });
+    </script>
+</body>
+</html>
